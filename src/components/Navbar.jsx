@@ -24,7 +24,12 @@ export default function Navbar({ theme, toggleTheme }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close drawer on route change
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
   const close = () => setOpen(false)
 
   const getLinkClass = ({ isActive }) =>
@@ -85,7 +90,7 @@ export default function Navbar({ theme, toggleTheme }) {
         </div>
       </div>
 
-      {open && <div className={styles.backdrop} onClick={close} />}
+      {open && <div className={styles.backdrop} onClick={close} aria-hidden="true" />}
     </header>
   )
 }
